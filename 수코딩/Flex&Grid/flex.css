@@ -1,0 +1,61 @@
+.container {
+    height: 100vh;
+    background: beige;
+    display: flex;
+
+    flex-direction: column;
+    /* item의 순서(상하좌우)를 바꾸는것 */
+
+    /* flex-wrap: wrap; */
+    /* 기본설정 nowrap, item이 한줄에 낑겨서 계속들어갈지의 여부 */
+    
+    /* justify-content: center; */
+    /* justify-content : 중심축의 item 배치를 바꾸는것 */
+
+    /* align-items: center; */
+    /* 반대축의 배치를 바꾸는것 */
+
+    /* align-content: center; */
+    /* align-content : 2개의 라인 이상시(?) 반대축의 item 배치를 바꾸는것 */
+
+
+}
+
+.item {
+    width: 40px;
+    height: 40px;
+}
+.item1 { 
+    background-color: #ef9a9a;
+    
+}
+.item2 { 
+    background-color: #f48fb1;
+}
+.item3 { 
+    background-color: #ce93d8;
+
+}
+.item4 { 
+    background-color: #b39ddb;
+}
+.item5 { 
+    background-color: #90caf9;
+}
+.item6 { 
+    background-color: #a5d6a7;
+}
+.item7 { 
+    background-color: #e6ee9c;
+}
+.item8 { 
+    background-color: #dbd69d;
+}
+.item9 { 
+    background-color: #d8b993;
+}
+.item10 { 
+    background-color: #e78282;
+}
+
+

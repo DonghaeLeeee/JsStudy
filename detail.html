@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="kr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <title>Document</title>
+</head>
+<body> 
+
+    <div class="container mt-3">
+        <div class="card p-3">
+            <span class="carName"></span>
+            <span class="carPrice"></span>
+        </div>
+    </div>
+
+    <form class="container my-5 form-group">
+    <p>상품선택</p>
+    <select class="form-select mt-2 selectItem">
+      <option>모자</option>
+      <option value="short">셔츠</option>
+      <option value="pants">바지</option>
+    </select>
+
+    <!-- option안에 직접 코딩을 해놓으면 확장성이 부족하다. -->
+    <select class="form-select mt-2 selectSize">
+        <option value=""></option>
+        <option value=""></option>
+        <option value=""></option>
+    </select>
+</form>
+
+<div id="test">
+
+</div>
+
+<script>
+// 방법1
+// insertAdjacentHTML(position,text) : 앞의 요소안에 문자형 HTML 넣어주는 함수
+// insertAdjacentHTML(), $().append() 두개다 추가해주는 문법이다.
+// beforeend : 안쪽 맨 밑
+    var 템플릿 = '<p>안녕^^<p>';
+    document.querySelector('#test').insertAdjacentHTML('beforeend',템플릿);
+// $('#test').append(템플릿);
+// document.queryselector('#test').innerHTML = 템플릿; 을 사용하면 갈아치울수있다.
+//$('#test').html(템플릿); 또한 갈아치울수있다.
+
+// 방법2 
+// let a = document.createElement('p');
+// a.innerHTML = '^^';
+// document.querySelector('#test').appendChild(a);
+// 방법2가 방법1보다 2배정도 빠르다. 요즘은 컴퓨터 좋은게 많아서 별차이는 없다.
+</script>
+
+<script>
+    var car = { name: '소나타', price: [50000, 40000, 30000] }
+    document.querySelector('.carName').innerHTML = '이름 : ' + car.name;
+    document.querySelector('.carPrice').innerHTML = '가격 : ' + car.price[0];
+    var pants = [28, 30, 32, 34];
+    var shirts =[95, 100, 105];
+
+    $('.form-select').eq(0).on('input', (e) => {
+        var value = e.currentTarget.value;
+        // var value = this.value;
+        // 지금 내가 선택한 이벤트의 value
+        if (value == 'short') {
+            $('.form-select').eq(1).removeClass('selectSize')
+            let shortsize = `<option value="">95</option>
+                             <option value="">100</option>
+                             <option value="">105</option>`;
+            $('.form-select').eq(1).html(shortsize);
+        } else if (value == 'pants') {
+            $('.form-select').eq(1).removeClass('selectSize')
+            $('.form-select').eq(1).html('');
+            // 밑의 코드는 하드코딩이기 때문에 좋지않음
+            // let pantssize = `<option value="">28</option>
+            //                  <option value="">30</option>
+            //                  <option value="">32</option>`;
+            // $('.form-select').eq(1).html(pantssize);
+            
+            pants.forEach((a,i) => {    //a는 array안에있는 데이터들, i는 index
+                $('.form-select').eq(1).append(`<option>${a}</option>`)
+            });
+        }
+
+        // var obj = {name : 'Kim', age : 20};
+        // for(let key(작명가능) in Object) 로 사용
+        // for (const key in obj) {
+        //     console.log(obj.name);
+        // }
+
+    })
+    // HTML을 JS로 코딩할때는 ' '와 " " 는 엔터를 먹어버리기때문에 ` `(빽픽)을 사용한다. 
+
+
+    // Object 와 Array의 차이점
+    // Array는 순서대로 자료를 저장한다
+    // Object는 자료에 이름을 붙여 저장할수있다.
+    // Object는 순서개념이 없다.
+    // Array는 정렬 하기좋음 sort(), slice(1,3)
+
+    // 콜백함수를 사용할때 arrow function을 사용하면 this값이 달라질수있다.
+    // arrow function 안에서 쓰면 바깥에 있던 this를 그대로 가져다씀
+    // function() 에서 쓰면 function()안에서 this가 알맞게 재정의됨
+    // 이벤트리스너같은거 사용할때 
+    // $('.form-select').eq(0).on('input',function(e) {
+    //     var value = this.value; ---> e.currentTarget
+    //     arrow function 사용하면 this의 뜻이 다름
+    // })
+</script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</body>
+<style>
+    .selectSize{
+        display: none;
+    }
+</style>
+</html>

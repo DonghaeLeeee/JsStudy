@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="kr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <title>스크롤바 연습</title>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-light bg-light">
+        <div class="container-fluid">
+            <span class="navbar-brand">JSSHOP</span>
+            <span class="ms-auto mx-3 badge bg-dark">Dark</span>
+            <button class="navbar-toggler" type="button">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+        </div>
+        <div class="loading" style="border: 1px solid black; width: 1%; height: 1px;"></div>
+    </nav>
+
+
+    <script>
+        //스크롤바 글씨크기
+        $(window).on('scroll', () => {
+            if ($(window).scrollTop() >= 100) {
+                $('.navbar-brand').css('font-size', '40px');
+            } else if ($(window).scrollTop() <= 100) {
+                $('.navbar-brand').css('font-size', '30px');
+            }
+
+        })
+
+        //스크롤바 진척도
+        $(window).on('scroll', () => {
+            let st = $(window).scrollTop();
+            let t = document.querySelector('html').scrollHeight;
+            let t2 = document.querySelector('html').clientHeight;
+            let per = st / (t - t2) * 100;
+            $('.loading').css('width', per + '%');
+        })
+    </script>
+
+
+    <div style="overflow: hidden;">
+        <div class="div-containner">
+            <div class="div-box">
+                <img src="car1.png" alt="" draggable="false">
+            </div>
+            <div class="div-box">
+                <img src="car2.png" alt="" draggable="false">
+            </div>
+            <div class="div-box">
+                <img src="car3.png" alt="" draggable="false">
+            </div>
+        </div>
+    </div>
+
+    <script>
+        //draggable : false => 드래그 & 이동 금지
+        //mousedown, touchstart : 마우스를 눌렀을때
+        //mouseup, touchend : 마우스를 뗏을때
+        //mousemove, touchmove : 마우스를 움직일때
+        //e.clientX : 현재 마우스 x축 좌표
+        //e.clientY : 현재 마우스 y축 좌표
+ 
+        let 시작좌표 = 0;
+        let 끝좌표 = 0;
+        let 눌렀냐 = false;
+
+        $('.div-box').eq(0).on('mousedown',(e) => {
+            // console.log(e.clientX)
+            시작좌표 = e.clientX;
+            눌렀냐 = true;
+        })
+
+        $('.div-box').eq(0).on('mousemove',(e) => {
+            끝좌표 = e.clientX - 시작좌표;
+            if(눌렀냐 == true) {
+                $('.div-containner').css('transform',`translateX(${끝좌표}px)`);
+            }
+        })
+        
+
+        $('.div-box').eq(0).on('mouseup', (e) => {
+            눌렀냐 = false;
+            console.log(끝좌표)
+            if(끝좌표 < -100 ) {
+                $('.div-containner')
+                .css('transition','all 0.5s')
+                .css('transform',`translateX(-100vw)`)
+            } else {
+                $('.div-containner')
+                .css('transition','all 0.5s')
+                .css('transform',`translateX(0vw)`)
+            }
+            setTimeout(() => {
+                $('.div-containner').css('transition','none')
+            },500)
+        })
+        
+    
+        // Hammer.js 라이브러리 사용하면 편해짐
+        // 브라우저 호환성 잡아줌
+        // 이벤트리스너 6개 말고 1개 필요
+        // 스와이프, pitch, rorate 이벤트리스너 제공
+    </script>
+
+    <button class="button-1">1</button>
+    <button class="button-2">2</button>
+    <button class="button-3">3</button>
+    <button class="button-4">NEXT</button>
+
+    <div class="lorem" style="width: 200px; height: 100px; overflow-y: scroll;">
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+        Quae voluptas voluptatum minus praesentium fugit debitis at,
+        laborum ipsa itaque placeat sit, excepturi eius. Nostrum perspiciatis,
+        eligendi quae consectetur praesentium exercitationem.
+    </div>
+
+    <script>
+        $('.lorem').on('scroll', () => {
+            var st = document.querySelector('.lorem').scrollTop;
+            var sh = document.querySelector('.lorem').scrollHeight;
+            var ch = document.querySelector('.lorem').clientHeight;
+            if ((st + ch) > (sh - 1)) {
+                alert('성공');
+            }
+        })
+    </script>
+
+    <div style="height: 1000px;"></div>
+
+    <script>
+        let next = 1;
+        $('.button-1').on('click', () => {
+            $('.div-containner').css('transform', 'translateX(0vw)');
+            next = 1;
+        })
+        $('.button-2').on('click', () => {
+            $('.div-containner').css('transform', 'translateX(-100vw)');
+            next = 2;
+        })
+        $('.button-3').on('click', () => {
+            $('.div-containner').css('transform', 'translateX(-200vw)');
+            next = 3;
+        })
+        $('.button-4').on('click', () => {
+            if (next == 3) {
+                next = 1;
+                $('.div-containner').css('transform', 'translateX(0vw)');
+            } else {
+                $('.div-containner').css('transform', 'translateX(-' + next + '00vw)');
+                next++;
+            }
+
+        })
+
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+        crossorigin="anonymous"></script>
+</body>
+
+<style>
+    .div-containner {
+        width: 300vw;
+    }
+
+    .div-box {
+        width: 100vw;
+        float: left;
+    }
+
+    .div-box img {
+        width: 100%;
+    }
+
+    .navbar {
+        position: fixed;
+        width: 100%;
+        z-index: 5;
+    }
+
+    .navbar-brand {
+        font-size: 30px;
+        transition: all 1s;
+    }
+</style>
+
+</html>
